@@ -2,39 +2,34 @@ package com.samplendkapp
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.samplendkapp.databinding.ActivityMainBinding
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        var encryptedText = findViewById<TextView>(R.id.text_encrypted_decrypted)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        // Example of a call to a native method
-        var encryptButton = findViewById<Button>(R.id.button_encrypt)
-        encryptButton.setOnClickListener {
+        binding.buttonEncrypt.setOnClickListener {
             run {
-                val plainText = findViewById<EditText>(R.id.encrypt_decrypt_text).text.toString()
-                val encryptedBytes = encryptFromJNI(plainText)
-                encryptedText.text = Base64.getEncoder().encodeToString(encryptedBytes)
-                encryptedText.visibility = View.VISIBLE
+                val plainText = binding.encryptDecryptText.text.toString()
+                val encryptedBytes = encryptFromJNI(plainText) // Example of a call to a native method
+                binding.textEncryptedDecrypted.text = Base64.getEncoder().encodeToString(encryptedBytes)
+                binding.textEncryptedDecrypted.visibility = View.VISIBLE
             }
         }
 
-        var decryptedText = findViewById<TextView>(R.id.text_encrypted_decrypted)
-
-        var decryptButton = findViewById<Button>(R.id.button_decrypt)
-        decryptButton.setOnClickListener {
+        binding.buttonDecrypt.setOnClickListener {
             run {
-                val cipherText = findViewById<EditText>(R.id.encrypt_decrypt_text).text.toString()
-
-                decryptedText.text = decryptFromJNI(Base64.getDecoder().decode(cipherText))
-                decryptedText.visibility = View.VISIBLE
+                val cipherText = binding.encryptDecryptText.text.toString()
+                binding.textEncryptedDecrypted.text = decryptFromJNI(Base64.getDecoder().decode(cipherText)) // Example of a call to a native method
+                binding.textEncryptedDecrypted.visibility = View.VISIBLE
             }
         }
     }
