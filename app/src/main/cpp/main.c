@@ -20,7 +20,7 @@ unsigned char *key = (unsigned char *) "01234567890123456789012345678901";
 unsigned char *iv = (unsigned char *) "0123456789012345";
 
 JNIEXPORT jbyteArray JNICALL
-Java_com_samplendkapp_MainActivity_encryptFromJNI(JNIEnv *env, jobject thiz, jstring message) {
+Java_com_samplendkapp_MainActivity_encryptFromJNI(JNIEnv *env, jobject this, jstring message) {
 
     int ciphertext_len;
 /*
@@ -44,15 +44,14 @@ Java_com_samplendkapp_MainActivity_encryptFromJNI(JNIEnv *env, jobject thiz, jst
     jbyteArray array = (*env)->NewByteArray(env, ciphertext_len);
     (*env)->SetByteArrayRegion(env, array, 0, ciphertext_len, (jbyte *) (ciphertext));
     return array;
-
 }
 
 JNIEXPORT jstring JNICALL
-Java_com_samplendkapp_MainActivity_decryptFromJNI(JNIEnv *env, jobject thiz, jbyteArray message) {
+Java_com_samplendkapp_MainActivity_decryptFromJNI(JNIEnv *env, jobject this, jbyteArray message) {
 
     int decryptedtext_len;
 
-/* Buffer for the decrypted text */
+    /* Buffer for the decrypted text */
     unsigned char decryptedtext[128];
 
     /* Message to be encrypted */
@@ -70,6 +69,4 @@ Java_com_samplendkapp_MainActivity_decryptFromJNI(JNIEnv *env, jobject thiz, jby
     decryptedtext[decryptedtext_len] = '\0';
 
     return (*env)->NewStringUTF(env, decryptedtext);
-
-
 }
